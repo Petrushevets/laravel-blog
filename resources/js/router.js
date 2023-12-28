@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Dashboard from "./views/admin/Dashboard.vue";
 import Registration from "./views/auth/Registration.vue";
+import Login from "./views/auth/Login.vue";
 
 const routes = [
     {
@@ -18,6 +19,14 @@ const routes = [
         component: Registration,
         meta: {
             layout: 'Registration'
+        }
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        meta: {
+            layout: 'Login'
         }
     },
 ]
