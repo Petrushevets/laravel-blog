@@ -36,4 +36,26 @@ const router = createRouter({
     routes
 });
 
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('xsrf_token');
+
+    if (!token) {
+        if (to.name === 'login' || to.name === 'register') {
+            return next()
+        } else {
+            return next({
+                name: 'login'
+            })
+        }
+    }
+
+    if (to.name === 'login' || to.name === 'register') {
+        return next({
+            name: 'admin.dashboard'
+        })
+    }
+
+    next()
+})
+
 export default router
