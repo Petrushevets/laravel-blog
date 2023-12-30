@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Dashboard from "./views/admin/Dashboard.vue";
 import Registration from "./views/auth/Registration.vue";
 import Login from "./views/auth/Login.vue";
+import PageNotFound from "./views/admin/PageNotFound.vue";
 
 const routes = [
     {
@@ -29,6 +30,13 @@ const routes = [
             layout: 'Login'
         }
     },
+    {
+        path: '/:pathMatch(.*)*',
+        component: PageNotFound,
+        meta: {
+            layout: 'PageNotFound'
+        }
+    }
 ]
 
 const router = createRouter({
@@ -42,7 +50,8 @@ router.beforeEach((to, from, next) => {
     if (!token) {
         if (to.name === 'login' || to.name === 'register') {
             return next()
-        } else {
+        } else if (to.name === 'admin.dashboard') {
+
             return next({
                 name: 'login'
             })
