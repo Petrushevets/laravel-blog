@@ -6,8 +6,9 @@
                     <div class="h1"><b>Admin</b>LTE</div>
                 </div>
                 <div class="card-body">
-                    <p class="login-box-msg">Sign in to start your session</p>
-                    <form class="mb-2">
+                    <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
+                    <p v-if="message" class="login-box-msg text-success fs-4">{{ message }}</p>
+                    <form>
                         <div class="input-group mb-3">
                             <input v-model="email" type="email" class="form-control"
                                    :class="{ 'is-invalid': errors.hasOwnProperty('email') }" placeholder="Email">
@@ -20,31 +21,16 @@
                                 {{ errors.email.toString() }}
                             </span>
                         </div>
-                        <div class="input-group mb-3">
-                            <input v-model="password" type="password" class="form-control"
-                                   :class="{ 'is-invalid': errors.hasOwnProperty('password') }" placeholder="Password">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
-                                </div>
-                            </div>
-                            <span v-if="errors.hasOwnProperty('password')" class="error invalid-feedback">
-                                {{ errors.password.toString() }}
-                            </span>
-                        </div>
                         <div class="row">
                             <div class="col-12">
-                                <button @click.prevent="login" type="submit" class="btn btn-primary btn-block">
-                                    Sign In
+                                <button @click.prevent="forgotPassword" type="submit" class="btn btn-primary btn-block">
+                                    Request new password
                                 </button>
                             </div>
                         </div>
                     </form>
-                    <p class="mb-1">
-                        <router-link class="text-center" to="/forgot-password">I forgot my password</router-link>
-                    </p>
-                    <p class="mb-0">
-                        <router-link class="text-center" to="/register">Register a new membership</router-link>
+                    <p class="mt-3 mb-1">
+                        <router-link to="/login">Login</router-link>
                     </p>
                 </div>
             </div>
@@ -56,23 +42,22 @@
 import axios from "axios";
 
 export default {
-    name: "Login",
+    name: "ForgotPassword",
 
     data() {
         return {
             email: null,
-            password: null,
+            message: null,
             errors: {},
         }
     },
 
     methods: {
-        login() {
+        forgotPassword() {
             axios.get('/sanctum/csrf-cookie').then(() => {
-                axios.post('/login', {email: this.email, password: this.password})
+                axios.post('/password/email', {email: this.email})
                     .then(response => {
-                        localStorage.setItem('xsrf_token', response.config.headers['X-XSRF-TOKEN'])
-                        this.$router.push({name: 'admin.dashboard'})
+                        this.message = response.data.message;
                     })
                     .catch(error => {
                         if (error.response.status === 422) {

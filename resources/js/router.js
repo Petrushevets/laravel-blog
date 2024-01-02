@@ -3,6 +3,7 @@ import Dashboard from "./views/admin/Dashboard.vue";
 import Registration from "./views/auth/Registration.vue";
 import Login from "./views/auth/Login.vue";
 import PageNotFound from "./views/admin/PageNotFound.vue";
+import ForgotPassword from "./views/auth/ForgotPassword.vue";
 
 const routes = [
     {
@@ -28,6 +29,14 @@ const routes = [
         component: Login,
         meta: {
             layout: 'Login'
+        }
+    },
+    {
+        path: '/forgot-password',
+        name: 'forgot-password',
+        component: ForgotPassword,
+        meta: {
+            layout: 'ForgotPassword'
         }
     },
     {
