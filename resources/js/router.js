@@ -4,6 +4,7 @@ import Registration from "./views/auth/Registration.vue";
 import Login from "./views/auth/Login.vue";
 import PageNotFound from "./views/admin/PageNotFound.vue";
 import ForgotPassword from "./views/auth/ForgotPassword.vue";
+import ResetPassword from "./views/auth/ResetPassword.vue";
 
 const routes = [
     {
@@ -37,6 +38,14 @@ const routes = [
         component: ForgotPassword,
         meta: {
             layout: 'ForgotPassword'
+        }
+    },
+    {
+        path: '/password/reset/:token',
+        name: 'password.reset',
+        component: ResetPassword,
+        meta: {
+            layout: 'ResetPassword'
         }
     },
     {

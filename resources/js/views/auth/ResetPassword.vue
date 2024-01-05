@@ -6,13 +6,12 @@
                     <div class="h1"><b>Admin</b>LTE</div>
                 </div>
                 <div class="card-body">
-                    <p class="login-box-msg">Sign in to start your session</p>
-                    <p v-if="$route.query.message" class="login-box-msg text-success fs-4">
-                        {{ $route.query.message }}
+                    <p class="login-box-msg">
+                        You are only one step a way from your new password, recover your password now.
                     </p>
-                    <form class="mb-2">
+                    <form>
                         <div class="input-group mb-3">
-                            <input v-model="email" type="email" class="form-control"
+                            <input v-model="form.email" type="email" class="form-control"
                                    :class="{ 'is-invalid': errors.hasOwnProperty('email') }" placeholder="Email">
                             <div class="input-group-append">
                                 <div class="input-group-text">
@@ -24,7 +23,7 @@
                             </span>
                         </div>
                         <div class="input-group mb-3">
-                            <input v-model="password" type="password" class="form-control"
+                            <input v-model="form.password" type="password" class="form-control"
                                    :class="{ 'is-invalid': errors.hasOwnProperty('password') }" placeholder="Password">
                             <div class="input-group-append">
                                 <div class="input-group-text">
@@ -35,19 +34,25 @@
                                 {{ errors.password.toString() }}
                             </span>
                         </div>
+                        <div class="input-group mb-3">
+                            <input v-model="form.password_confirmation" type="password" class="form-control"
+                                   placeholder="Confirm Password">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-12">
-                                <button @click.prevent="login" type="submit" class="btn btn-primary btn-block">
-                                    Sign In
+                                <button @click.prevent="resetPassword" type="submit" class="btn btn-primary btn-block">
+                                    Change password
                                 </button>
                             </div>
                         </div>
                     </form>
-                    <p class="mb-1">
-                        <router-link class="text-center" to="/forgot-password">I forgot my password</router-link>
-                    </p>
-                    <p class="mb-0">
-                        <router-link class="text-center" to="/register">Register a new membership</router-link>
+                    <p class="mt-3 mb-1">
+                        <router-link to="/login">Login</router-link>
                     </p>
                 </div>
             </div>
@@ -59,23 +64,36 @@
 import axios from "axios";
 
 export default {
-    name: "Login",
+    name: "ForgotPassword",
 
     data() {
         return {
-            email: null,
-            password: null,
+            form: {
+                email: null,
+                password_confirmation: null,
+                password: null,
+                token: null,
+            },
             errors: {},
         }
     },
 
+    mounted() {
+        this.setEmail();
+        this.setToken();
+    },
+
     methods: {
-        login() {
+        resetPassword() {
             axios.get('/sanctum/csrf-cookie').then(() => {
-                axios.post('/login', {email: this.email, password: this.password})
+                axios.post('/password/reset', this.form)
                     .then(response => {
-                        localStorage.setItem('xsrf_token', response.config.headers['X-XSRF-TOKEN'])
-                        this.$router.push({name: 'admin.dashboard'})
+                        this.$router.push({
+                            name: 'login',
+                            query: {
+                                message: response.data.message
+                            }
+                        });
                     })
                     .catch(error => {
                         if (error.response.status === 422) {
@@ -84,6 +102,14 @@ export default {
                     })
             });
         },
+
+        setEmail() {
+            this.form.email = this.$route.query.email
+        },
+
+        setToken() {
+            this.form.token = this.$route.params.token;
+        }
     }
 }
 </script>
