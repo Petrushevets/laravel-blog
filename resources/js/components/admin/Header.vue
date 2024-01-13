@@ -30,7 +30,7 @@
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <a href="#" class="dropdown-item">
                         <div class="media">
-                            <img src="dist/img/user1-128x128.jpg" alt="User Avatar"
+                            <img src="" alt="User Avatar"
                                  class="img-size-50 mr-3 img-circle">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
@@ -45,7 +45,7 @@
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
                         <div class="media">
-                            <img src="dist/img/user8-128x128.jpg" alt="User Avatar"
+                            <img src="" alt="User Avatar"
                                  class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
@@ -60,7 +60,7 @@
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
                         <div class="media">
-                            <img src="dist/img/user3-128x128.jpg" alt="User Avatar"
+                            <img src="" alt="User Avatar"
                                  class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
@@ -103,6 +103,26 @@
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
             </li>
+            <li class="nav-item dropdown user-menu" :class="{ show: isActive }">
+                <a @click="showUserModal" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <img src="" class="user-image img-circle elevation-2"
+                         alt="User Image">
+                    <span class="d-none d-md-inline">Alexander Pierce</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" :class="{ show: isActive }">
+                    <li class="user-header bg-primary">
+                        <img src="" class="img-circle elevation-2" alt="User Image">
+                        <p>
+                            Alexander Pierce - Web Developer
+                            <small>Member since Nov. 2012</small>
+                        </p>
+                    </li>
+                    <li class="user-footer">
+                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                        <a @click.prevent="logout" href="#" class="btn btn-default btn-flat float-right">Sign out</a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
@@ -120,6 +140,26 @@
 
 <script>
 export default {
-    name: "HeaderAdmin"
+    name: "HeaderAdmin",
+
+    data() {
+        return {
+            isActive: false
+        }
+    },
+
+    methods: {
+        showUserModal() {
+            this.isActive = !this.isActive;
+        },
+
+        logout() {
+            axios.post('/logout')
+                .then(() => {
+                    localStorage.removeItem('xsrf_token')
+                    this.$router.push({name: 'login'})
+                })
+        }
+    }
 }
 </script>
