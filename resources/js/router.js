@@ -5,6 +5,7 @@ import Login from "./views/auth/Login.vue";
 import PageNotFound from "./views/admin/PageNotFound.vue";
 import ForgotPassword from "./views/auth/ForgotPassword.vue";
 import ResetPassword from "./views/auth/ResetPassword.vue";
+import CategoryCreate from "./views/admin/Category/Create.vue";
 
 const routes = [
     {
@@ -49,6 +50,14 @@ const routes = [
         }
     },
     {
+        path: '/admin/category/create',
+        name: 'admin.category.create',
+        component: CategoryCreate,
+        meta: {
+            pageTitle: 'Create a Category'
+        }
+    },
+    {
         path: '/:pathMatch(.*)*',
         component: PageNotFound,
         meta: {
@@ -69,7 +78,6 @@ router.beforeEach((to, from, next) => {
         if (to.name === 'login' || to.name === 'register') {
             return next()
         } else if (to.name === 'admin.dashboard') {
-
             return next({
                 name: 'login'
             })
