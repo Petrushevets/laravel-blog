@@ -5,6 +5,7 @@ import Login from "./views/auth/Login.vue";
 import PageNotFound from "./views/admin/PageNotFound.vue";
 import ForgotPassword from "./views/auth/ForgotPassword.vue";
 import ResetPassword from "./views/auth/ResetPassword.vue";
+import CategoryIndex from "./views/admin/Category/Index.vue";
 import CategoryCreate from "./views/admin/Category/Create.vue";
 
 const routes = [
@@ -47,6 +48,14 @@ const routes = [
         component: ResetPassword,
         meta: {
             layout: 'ResetPassword'
+        }
+    },
+    {
+        path: '/admin/category',
+        name: 'admin.category.index',
+        component: CategoryIndex,
+        meta: {
+            pageTitle: 'Categories'
         }
     },
     {
