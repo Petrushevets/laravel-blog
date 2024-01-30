@@ -14,6 +14,29 @@ class CategoryTest extends TestCase
     /**
      * @return void
      */
+    public function test_index()
+    {
+        $user = User::factory()->create();
+        Category::factory()->create();
+
+        $this->actingAs($user)->json('get', '/api/categories')
+            ->assertOk()
+            ->assertJsonStructure(
+                [
+                    'data' => [
+                        [
+                            'id',
+                            'title',
+                            'slug',
+                        ]
+                    ]
+                ]
+            );
+    }
+
+    /**
+     * @return void
+     */
     public function test_store()
     {
         $user = User::factory()->create();
