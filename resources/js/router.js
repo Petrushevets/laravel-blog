@@ -7,6 +7,7 @@ import ForgotPassword from "./views/auth/ForgotPassword.vue";
 import ResetPassword from "./views/auth/ResetPassword.vue";
 import CategoryIndex from "./views/admin/Category/Index.vue";
 import CategoryCreate from "./views/admin/Category/Create.vue";
+import CategoryEdit from "./views/admin/Category/Edit.vue";
 
 const routes = [
     {
@@ -64,6 +65,14 @@ const routes = [
         component: CategoryCreate,
         meta: {
             pageTitle: 'Create a Category'
+        }
+    },
+    {
+        path: '/admin/category/:id/edit',
+        name: 'admin.category.edit',
+        component: CategoryEdit,
+        meta: {
+            pageTitle: 'Edit Category: '
         }
     },
     {

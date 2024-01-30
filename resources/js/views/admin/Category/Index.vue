@@ -17,6 +17,7 @@
                         <th style="width: 20%">
                             Slug
                         </th>
+                        <th style="width: 20%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -29,6 +30,13 @@
                         </td>
                         <td>
                             {{ category.slug }}
+                        </td>
+                        <td class="project-actions text-right">
+                            <router-link class="btn btn-info btn-sm"
+                                         :to="{ name: 'admin.category.edit', params: { id: category.id }}">
+                                <i class="fas fa-pencil-alt"></i>
+                                Edit
+                            </router-link>
                         </td>
                     </tr>
                     </tbody>
@@ -57,8 +65,8 @@ export default {
     methods: {
         getCategories() {
             axios.get('/api/categories')
-                .then(response => {
-                    this.categories = response.data.data
+                .then(({data: categories}) => {
+                    this.categories = categories.data
                 });
         }
     }

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CategoryController extends Controller
@@ -37,30 +36,34 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return CategoryResource
      */
-    public function show(Category $category)
+    public function show(int $id): CategoryResource
     {
-        //
+        return new CategoryResource(Category::findOrFail($id));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param  CategoryRequest  $request
+     * @param  Category  $category
+     * @return CategoryResource
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category): CategoryResource
     {
-        //
+        $data = $request->validated();
+
+        $category->update($data);
+
+        return new CategoryResource($category);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
+     * @param  Category  $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category)
