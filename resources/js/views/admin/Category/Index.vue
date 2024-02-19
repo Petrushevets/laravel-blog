@@ -32,25 +32,35 @@
                             {{ category.slug }}
                         </td>
                         <td class="project-actions text-right">
-                            <router-link class="btn btn-info btn-sm"
+                            <router-link class="btn btn-info btn-sm mr-1"
                                          :to="{ name: 'admin.category.edit', params: { id: category.id }}">
                                 <i class="fas fa-pencil-alt"></i>
                                 Edit
                             </router-link>
+                            <button @click="openModal(category)" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                                Delete
+                            </button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <Modal ref="modal"/>
     </section>
 </template>
 
 <script>
 import axios from "axios";
+import Modal from "../../../components/admin/Modal.vue";
+import {useToast} from "vue-toastification";
+
+const toast = useToast()
 
 export default {
     name: "Index",
+    components: {Modal},
 
     mounted() {
         this.getCategories()
@@ -68,6 +78,28 @@ export default {
                 .then(({data: categories}) => {
                     this.categories = categories.data
                 });
+        },
+
+        openModal(category) {
+            const title = 'Warning';
+            const content = `This will permanently delete category ${category.title}. Continue?`;
+            const button = {
+                label: "Delete",
+                class: "btn-danger",
+                action: () => this.deleteCategory(category.id)
+            };
+
+            this.$refs.modal.openModal({title, content, button});
+        },
+
+        deleteCategory(id) {
+            console.log(id)
+            axios.delete(`/api/categories/${id}`)
+                .then(() => {
+                    this.getCategories()
+                    this.$refs.modal.handleCancel();
+                    toast.success('Category deleted');
+                })
         }
     }
 }

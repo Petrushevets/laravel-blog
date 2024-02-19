@@ -64,10 +64,10 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  Category  $category
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): void
     {
-        //
+        $category->delete();
     }
 }
