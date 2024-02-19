@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -64,10 +65,12 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  Category  $category
-     * @return void
+     * @return Response
      */
-    public function destroy(Category $category): void
+    public function destroy(Category $category): Response
     {
         $category->delete();
+
+        return response()->noContent();
     }
 }

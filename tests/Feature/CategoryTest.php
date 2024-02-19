@@ -12,14 +12,29 @@ class CategoryTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @var User
+     */
+    private User $user;
+
+    /**
+     * This method is called before each test
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
+    /**
      * @return void
      */
     public function test_index()
     {
-        $user = User::factory()->create();
         Category::factory()->create();
 
-        $this->actingAs($user)->json('get', '/api/categories')
+        $this->actingAs($this->user)->json('get', '/api/categories')
             ->assertOk()
             ->assertJsonStructure(
                 [
@@ -39,10 +54,9 @@ class CategoryTest extends TestCase
      */
     public function test_store()
     {
-        $user = User::factory()->create();
         $category = Category::factory()->make();
 
-        $this->actingAs($user)->json('post', '/api/categories', $category->toArray())
+        $this->actingAs($this->user)->json('post', '/api/categories', $category->toArray())
             ->assertCreated()
             ->assertJsonStructure(
                 [
@@ -55,5 +69,17 @@ class CategoryTest extends TestCase
             );
 
         $this->assertDatabaseHas('categories', $category->toArray());
+    }
+
+    /**
+     * @return void
+     */
+    public function test_delete()
+    {
+        $category = Category::factory()->create();
+
+        $this->actingAs($this->user)->json('delete', "/api/categories/$category->id")
+            ->assertNoContent();
+        $this->assertDatabaseMissing('categories', $category->toArray());
     }
 }
