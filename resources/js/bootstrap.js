@@ -11,11 +11,25 @@ import 'bootstrap';
  */
 
 import axios from 'axios';
+import router from "./router";
 
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.withCredentials = true;
+window.axios.interceptors.response.use({}, error => {
+    if (error.response.status === 401) {
+        const token = localStorage.getItem('xsrf_token');
 
+        if (token) {
+            localStorage.removeItem('xsrf_token');
+        }
+
+        router.push({name: 'login'})
+    }
+
+    return Promise.reject(error)
+})
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

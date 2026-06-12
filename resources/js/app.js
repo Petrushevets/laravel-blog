@@ -8,6 +8,7 @@ import './bootstrap';
 import { createApp } from 'vue';
 import App from "./App.vue";
 import router from "./router";
+import Toast from "vue-toastification";
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -15,7 +16,7 @@ import router from "./router";
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp(App).use(router);
+const app = createApp(App).use(router).use(Toast);
 
 
 /**

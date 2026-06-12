@@ -5,13 +5,18 @@
             <span class="brand-text font-weight-light">AdminLTE 3</span>
         </a>
         <div class="sidebar">
-            <nav class="mt-2"></nav>
+            <nav class="mt-2">
+                <menu-sidebar></menu-sidebar>
+            </nav>
         </div>
     </aside>
 </template>
 
 <script>
+import MenuSidebar from "./MenuSidebar.vue";
+
 export default {
     name: "SidebarAdmin",
+    components: {MenuSidebar},
 }
 </script>
